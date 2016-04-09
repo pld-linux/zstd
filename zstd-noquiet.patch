@@ -1,0 +1,77 @@
+--- zstd-0.5.1/lib/Makefile.orig	2016-02-18 12:04:02.000000000 +0100
++++ zstd-0.5.1/lib/Makefile	2016-04-09 17:32:37.197974571 +0200
+@@ -85,16 +85,16 @@
+ 
+ libzstd: $(ZSTD_FILES)
+ 	@echo compiling static library
+-	@$(CC) $(FLAGS) -c $^
+-	@$(AR) rcs $@.a *.o
++	$(CC) $(FLAGS) -c $^
++	$(AR) rcs $@.a *.o
+ 	@echo compiling dynamic library $(LIBVER)
+-	@$(CC) $(FLAGS) -shared $^ -fPIC $(SONAME_FLAGS) -o $@.$(SHARED_EXT_VER)
++	$(CC) $(FLAGS) -shared $^ -fPIC $(SONAME_FLAGS) -o $@.$(SHARED_EXT_VER)
+ 	@echo creating versioned links
+-	@ln -sf $@.$(SHARED_EXT_VER) $@.$(SHARED_EXT_MAJOR)
+-	@ln -sf $@.$(SHARED_EXT_VER) $@.$(SHARED_EXT)
++	ln -sf $@.$(SHARED_EXT_VER) $@.$(SHARED_EXT_MAJOR)
++	ln -sf $@.$(SHARED_EXT_VER) $@.$(SHARED_EXT)
+ 
+ clean:
+-	@rm -f core *.o *.a *.gcda *.$(SHARED_EXT) *.$(SHARED_EXT).* libzstd.pc
++	rm -f core *.o *.a *.gcda *.$(SHARED_EXT) *.$(SHARED_EXT).* libzstd.pc
+ 	@echo Cleaning library completed
+ 
+ #------------------------------------------------------------------------
+@@ -104,33 +104,33 @@
+ libzstd.pc:
+ libzstd.pc: libzstd.pc.in
+ 	@echo creating pkgconfig
+-	@sed -e 's|@PREFIX@|$(PREFIX)|' \
++	sed -e 's|@PREFIX@|$(PREFIX)|' \
+              -e 's|@LIBDIR@|$(LIBDIR)|' \
+              -e 's|@INCLUDEDIR@|$(INCLUDEDIR)|' \
+              -e 's|@VERSION@|$(VERSION)|' \
+              $< >$@
+ 
+ install: libzstd libzstd.pc
+-	@install -d -m 755 $(DESTDIR)$(LIBDIR)/pkgconfig/ $(DESTDIR)$(INCLUDEDIR)/
+-	@install -m 755 libzstd.$(SHARED_EXT_VER) $(DESTDIR)$(LIBDIR)/libzstd.$(SHARED_EXT_VER)
+-	@cp -a libzstd.$(SHARED_EXT_MAJOR) $(DESTDIR)$(LIBDIR)
+-	@cp -a libzstd.$(SHARED_EXT) $(DESTDIR)$(LIBDIR)
+-	@cp -a libzstd.pc $(DESTDIR)$(LIBDIR)/pkgconfig/
+-	@install -m 644 libzstd.a $(DESTDIR)$(LIBDIR)/libzstd.a
+-	@install -m 644 zstd.h $(DESTDIR)$(INCLUDEDIR)/zstd.h
+-	@install -m 644 zstd.h $(DESTDIR)$(INCLUDEDIR)/zbuff.h
+-	@install -m 644 zstd.h $(DESTDIR)$(INCLUDEDIR)/zdict.h
++	install -d -m 755 $(DESTDIR)$(LIBDIR)/pkgconfig/ $(DESTDIR)$(INCLUDEDIR)/
++	install -m 755 libzstd.$(SHARED_EXT_VER) $(DESTDIR)$(LIBDIR)/libzstd.$(SHARED_EXT_VER)
++	cp -a libzstd.$(SHARED_EXT_MAJOR) $(DESTDIR)$(LIBDIR)
++	cp -a libzstd.$(SHARED_EXT) $(DESTDIR)$(LIBDIR)
++	cp -a libzstd.pc $(DESTDIR)$(LIBDIR)/pkgconfig/
++	install -m 644 libzstd.a $(DESTDIR)$(LIBDIR)/libzstd.a
++	install -m 644 zstd.h $(DESTDIR)$(INCLUDEDIR)/zstd.h
++	install -m 644 zstd.h $(DESTDIR)$(INCLUDEDIR)/zbuff.h
++	install -m 644 zstd.h $(DESTDIR)$(INCLUDEDIR)/zdict.h
+ 	@echo zstd static and shared library installed
+ 
+ uninstall:
+-	@rm -f $(DESTDIR)$(LIBDIR)/libzstd.$(SHARED_EXT)
+-	@rm -f $(DESTDIR)$(LIBDIR)/libzstd.$(SHARED_EXT_MAJOR)
+-	@rm -f $(DESTDIR)$(LIBDIR)/pkgconfig/libzstd.pc
+-	@[ -x $(DESTDIR)$(LIBDIR)/libzstd.$(SHARED_EXT_VER) ] && rm -f $(DESTDIR)$(LIBDIR)/libzstd.$(SHARED_EXT_VER)
+-	@[ -f $(DESTDIR)$(LIBDIR)/libzstd.a ] && rm -f $(DESTDIR)$(LIBDIR)/libzstd.a
+-	@[ -f $(DESTDIR)$(INCLUDEDIR)/zstd.h ] && rm -f $(DESTDIR)$(INCLUDEDIR)/zstd.h
+-	@[ -f $(DESTDIR)$(INCLUDEDIR)/zstd.h ] && rm -f $(DESTDIR)$(INCLUDEDIR)/zbuff.h
+-	@[ -f $(DESTDIR)$(INCLUDEDIR)/zstd.h ] && rm -f $(DESTDIR)$(INCLUDEDIR)/zdict.h
++	rm -f $(DESTDIR)$(LIBDIR)/libzstd.$(SHARED_EXT)
++	rm -f $(DESTDIR)$(LIBDIR)/libzstd.$(SHARED_EXT_MAJOR)
++	rm -f $(DESTDIR)$(LIBDIR)/pkgconfig/libzstd.pc
++	[ -x $(DESTDIR)$(LIBDIR)/libzstd.$(SHARED_EXT_VER) ] && rm -f $(DESTDIR)$(LIBDIR)/libzstd.$(SHARED_EXT_VER)
++	[ -f $(DESTDIR)$(LIBDIR)/libzstd.a ] && rm -f $(DESTDIR)$(LIBDIR)/libzstd.a
++	[ -f $(DESTDIR)$(INCLUDEDIR)/zstd.h ] && rm -f $(DESTDIR)$(INCLUDEDIR)/zstd.h
++	[ -f $(DESTDIR)$(INCLUDEDIR)/zstd.h ] && rm -f $(DESTDIR)$(INCLUDEDIR)/zbuff.h
++	[ -f $(DESTDIR)$(INCLUDEDIR)/zstd.h ] && rm -f $(DESTDIR)$(INCLUDEDIR)/zdict.h
+ 	@echo zstd libraries successfully uninstalled
+ 
+ endif
