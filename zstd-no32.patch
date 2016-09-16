@@ -1,11 +1,13 @@
---- zstd-0.5.1/programs/Makefile.orig	2016-02-18 12:04:02.000000000 +0100
-+++ zstd-0.5.1/programs/Makefile	2016-04-09 17:53:32.607921888 +0200
-@@ -82,7 +82,7 @@
+--- zstd-1.0.0/Makefile.orig	2016-08-31 18:09:10.000000000 +0200
++++ zstd-1.0.0/Makefile	2016-09-16 20:33:14.848164855 +0200
+@@ -25,8 +25,8 @@
  
- default: zstd
+ all:
+ 	$(MAKE) -C $(ZSTDDIR) $@
+-	$(MAKE) -C $(PRGDIR) $@ zstd32
+-	$(MAKE) -C $(TESTDIR) $@ all32
++	$(MAKE) -C $(PRGDIR) $@
++	$(MAKE) -C $(TESTDIR) $@
  
--all: zstd zstd32 fullbench fullbench32 fuzzer fuzzer32 zbufftest zbufftest32 paramgrill datagen
-+all: zstd fullbench fuzzer zbufftest paramgrill datagen
- 
- zstd  : $(ZSTD_FILES) $(ZSTD_FILES_LEGACY) $(ZSTDDIR)/zbuff.c $(ZSTDDIR)/zdict.c $(ZSTDDIR)/divsufsort.c \
-         zstdcli.c fileio.c bench.c xxhash.c datagen.c dibio.c
+ zstd:
+ 	$(MAKE) -C $(PRGDIR)
