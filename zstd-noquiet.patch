@@ -1,31 +1,44 @@
---- zstd-1.0.0/lib/Makefile.orig	2016-09-16 19:05:28.934891649 +0200
-+++ zstd-1.0.0/lib/Makefile	2016-09-16 19:14:06.861552399 +0200
-@@ -63,17 +63,17 @@
- 
- libzstd: $(ZSTD_FILES)
+--- zstd-1.1.2/lib/Makefile.orig	2016-12-26 12:13:28.026947087 +0100
++++ zstd-1.1.2/lib/Makefile	2016-12-26 12:27:54.386937195 +0100
+@@ -67,20 +67,20 @@
+ libzstd.a: ARFLAGS = rcs
+ libzstd.a: $(ZSTD_FILES)
  	@echo compiling static library
 -	@$(CC) $(FLAGS) -c $^
--	@$(AR) rcs $@.a *.o
+-	@$(AR) $(ARFLAGS) $@ *.o
 +	$(CC) $(FLAGS) -c $^
-+	$(AR) rcs $@.a *.o
++	$(AR) $(ARFLAGS) $@ *.o
+ 
+ $(LIBZSTD): LDFLAGS += -shared -fPIC -fvisibility=hidden
+ $(LIBZSTD): $(ZSTD_FILES)
  	@echo compiling dynamic library $(LIBVER)
--	@$(CC) $(FLAGS) -shared $^ -fPIC $(SONAME_FLAGS) -o $@.$(SHARED_EXT_VER)
-+	$(CC) $(FLAGS) -shared $^ -fPIC $(SONAME_FLAGS) -o $@.$(SHARED_EXT_VER)
+ ifneq (,$(filter Windows%,$(OS)))
+-	@$(CC) $(FLAGS) -DZSTD_DLL_EXPORT=1 -shared $^ -o dll\libzstd.dll
++	$(CC) $(FLAGS) -DZSTD_DLL_EXPORT=1 -shared $^ -o dll\libzstd.dll
+ 	dlltool -D dll\libzstd.dll -d dll\libzstd.def -l dll\libzstd.lib
+ else
+-	@$(CC) $(FLAGS) $^ $(LDFLAGS) $(SONAME_FLAGS) -o $@
++	$(CC) $(FLAGS) $^ $(LDFLAGS) $(SONAME_FLAGS) -o $@
  	@echo creating versioned links
--	@ln -sf $@.$(SHARED_EXT_VER) $@.$(SHARED_EXT_MAJOR)
--	@ln -sf $@.$(SHARED_EXT_VER) $@.$(SHARED_EXT)
-+	ln -sf $@.$(SHARED_EXT_VER) $@.$(SHARED_EXT_MAJOR)
-+	ln -sf $@.$(SHARED_EXT_VER) $@.$(SHARED_EXT)
+-	@ln -sf $@ libzstd.$(SHARED_EXT_MAJOR)
+-	@ln -sf $@ libzstd.$(SHARED_EXT)
++	ln -sf $@ libzstd.$(SHARED_EXT_MAJOR)
++	ln -sf $@ libzstd.$(SHARED_EXT)
+ endif
+ 
+ libzstd : $(LIBZSTD)
+@@ -88,8 +88,8 @@
+ lib: libzstd.a libzstd
  
  clean:
--	@rm -f core *.o *.a *.gcda *.$(SHARED_EXT) *.$(SHARED_EXT).* libzstd.pc
--	@rm -f decompress/*.o
-+	rm -f core *.o *.a *.gcda *.$(SHARED_EXT) *.$(SHARED_EXT).* libzstd.pc
-+	rm -f decompress/*.o
+-	@$(RM) core *.o *.a *.gcda *.$(SHARED_EXT) *.$(SHARED_EXT).* libzstd.pc dll/libzstd.dll dll/libzstd.lib
+-	@$(RM) decompress/*.o
++	$(RM) core *.o *.a *.gcda *.$(SHARED_EXT) *.$(SHARED_EXT).* libzstd.pc dll/libzstd.dll dll/libzstd.lib
++	$(RM) decompress/*.o
  	@echo Cleaning library completed
  
  #------------------------------------------------------------------------
-@@ -83,22 +83,22 @@
+@@ -99,35 +99,35 @@
  libzstd.pc:
  libzstd.pc: libzstd.pc.in
  	@echo creating pkgconfig
@@ -36,40 +49,48 @@
               -e 's|@VERSION@|$(VERSION)|' \
               $< >$@
  
- install: libzstd libzstd.pc
+ install: libzstd.a libzstd libzstd.pc
 -	@install -d -m 755 $(DESTDIR)$(LIBDIR)/pkgconfig/ $(DESTDIR)$(INCLUDEDIR)/
--	@install -m 755 libzstd.$(SHARED_EXT_VER) $(DESTDIR)$(LIBDIR)/libzstd.$(SHARED_EXT_VER)
+-	@install -m 755 libzstd.$(SHARED_EXT_VER) $(DESTDIR)$(LIBDIR)
 -	@cp -a libzstd.$(SHARED_EXT_MAJOR) $(DESTDIR)$(LIBDIR)
 -	@cp -a libzstd.$(SHARED_EXT) $(DESTDIR)$(LIBDIR)
 -	@cp -a libzstd.pc $(DESTDIR)$(LIBDIR)/pkgconfig/
--	@install -m 644 libzstd.a $(DESTDIR)$(LIBDIR)/libzstd.a
--	@install -m 644 zstd.h $(DESTDIR)$(INCLUDEDIR)/zstd.h
--	@install -m 644 common/zbuff.h $(DESTDIR)$(INCLUDEDIR)/zbuff.h
--	@install -m 644 dictBuilder/zdict.h $(DESTDIR)$(INCLUDEDIR)/zdict.h
+-	@install -m 644 libzstd.a $(DESTDIR)$(LIBDIR)
+-	@install -m 644 zstd.h $(DESTDIR)$(INCLUDEDIR)
+-	@install -m 644 common/zstd_errors.h $(DESTDIR)$(INCLUDEDIR)
+-	@install -m 644 deprecated/zbuff.h $(DESTDIR)$(INCLUDEDIR)     # prototypes generate deprecation warnings
+-	@install -m 644 dictBuilder/zdict.h $(DESTDIR)$(INCLUDEDIR)
 +	install -d -m 755 $(DESTDIR)$(LIBDIR)/pkgconfig/ $(DESTDIR)$(INCLUDEDIR)/
-+	install -m 755 libzstd.$(SHARED_EXT_VER) $(DESTDIR)$(LIBDIR)/libzstd.$(SHARED_EXT_VER)
++	install -m 755 libzstd.$(SHARED_EXT_VER) $(DESTDIR)$(LIBDIR)
 +	cp -a libzstd.$(SHARED_EXT_MAJOR) $(DESTDIR)$(LIBDIR)
 +	cp -a libzstd.$(SHARED_EXT) $(DESTDIR)$(LIBDIR)
 +	cp -a libzstd.pc $(DESTDIR)$(LIBDIR)/pkgconfig/
-+	install -m 644 libzstd.a $(DESTDIR)$(LIBDIR)/libzstd.a
-+	install -m 644 zstd.h $(DESTDIR)$(INCLUDEDIR)/zstd.h
-+	install -m 644 common/zbuff.h $(DESTDIR)$(INCLUDEDIR)/zbuff.h
-+	install -m 644 dictBuilder/zdict.h $(DESTDIR)$(INCLUDEDIR)/zdict.h
++	install -m 644 libzstd.a $(DESTDIR)$(LIBDIR)
++	install -m 644 zstd.h $(DESTDIR)$(INCLUDEDIR)
++	install -m 644 common/zstd_errors.h $(DESTDIR)$(INCLUDEDIR)
++	install -m 644 deprecated/zbuff.h $(DESTDIR)$(INCLUDEDIR)     # prototypes generate deprecation warnings
++	install -m 644 dictBuilder/zdict.h $(DESTDIR)$(INCLUDEDIR)
  	@echo zstd static and shared library installed
  
  uninstall:
-@@ -106,10 +106,10 @@
- 	$(RM) $(DESTDIR)$(LIBDIR)/libzstd.$(SHARED_EXT_MAJOR)
- 	$(RM) $(DESTDIR)$(LIBDIR)/pkgconfig/libzstd.pc
- 	[ -x $(DESTDIR)$(LIBDIR)/libzstd.$(SHARED_EXT_VER) ] && $(RM) $(DESTDIR)$(LIBDIR)/libzstd.$(SHARED_EXT_VER)
--	@[ -f $(DESTDIR)$(LIBDIR)/libzstd.a ] && $(RM) $(DESTDIR)$(LIBDIR)/libzstd.a
--	@[ -f $(DESTDIR)$(INCLUDEDIR)/zstd.h ] && $(RM) $(DESTDIR)$(INCLUDEDIR)/zstd.h
--	@[ -f $(DESTDIR)$(INCLUDEDIR)/zbuff.h ] && $(RM) $(DESTDIR)$(INCLUDEDIR)/zbuff.h
--	@[ -f $(DESTDIR)$(INCLUDEDIR)/zdict.h ] && $(RM) $(DESTDIR)$(INCLUDEDIR)/zdict.h
-+	[ -f $(DESTDIR)$(LIBDIR)/libzstd.a ] && $(RM) $(DESTDIR)$(LIBDIR)/libzstd.a
-+	[ -f $(DESTDIR)$(INCLUDEDIR)/zstd.h ] && $(RM) $(DESTDIR)$(INCLUDEDIR)/zstd.h
-+	[ -f $(DESTDIR)$(INCLUDEDIR)/zbuff.h ] && $(RM) $(DESTDIR)$(INCLUDEDIR)/zbuff.h
-+	[ -f $(DESTDIR)$(INCLUDEDIR)/zdict.h ] && $(RM) $(DESTDIR)$(INCLUDEDIR)/zdict.h
+-	@$(RM) $(DESTDIR)$(LIBDIR)/libzstd.a
+-	@$(RM) $(DESTDIR)$(LIBDIR)/libzstd.$(SHARED_EXT)
+-	@$(RM) $(DESTDIR)$(LIBDIR)/libzstd.$(SHARED_EXT_MAJOR)
+-	@$(RM) $(DESTDIR)$(LIBDIR)/libzstd.$(SHARED_EXT_VER)
+-	@$(RM) $(DESTDIR)$(LIBDIR)/pkgconfig/libzstd.pc
+-	@$(RM) $(DESTDIR)$(INCLUDEDIR)/zstd.h
+-	@$(RM) $(DESTDIR)$(INCLUDEDIR)/zstd_errors.h
+-	@$(RM) $(DESTDIR)$(INCLUDEDIR)/zbuff.h   # Deprecated streaming functions
+-	@$(RM) $(DESTDIR)$(INCLUDEDIR)/zdict.h
++	$(RM) $(DESTDIR)$(LIBDIR)/libzstd.a
++	$(RM) $(DESTDIR)$(LIBDIR)/libzstd.$(SHARED_EXT)
++	$(RM) $(DESTDIR)$(LIBDIR)/libzstd.$(SHARED_EXT_MAJOR)
++	$(RM) $(DESTDIR)$(LIBDIR)/libzstd.$(SHARED_EXT_VER)
++	$(RM) $(DESTDIR)$(LIBDIR)/pkgconfig/libzstd.pc
++	$(RM) $(DESTDIR)$(INCLUDEDIR)/zstd.h
++	$(RM) $(DESTDIR)$(INCLUDEDIR)/zstd_errors.h
++	$(RM) $(DESTDIR)$(INCLUDEDIR)/zbuff.h   # Deprecated streaming functions
++	$(RM) $(DESTDIR)$(INCLUDEDIR)/zdict.h
  	@echo zstd libraries successfully uninstalled
  
  endif

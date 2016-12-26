@@ -1,17 +1,17 @@
 Summary:	Zstandard - fast lossless compression algorithm
 Summary(pl.UTF-8):	Zstandard - szybki, bezstratny algorytm kompresji
 Name:		zstd
-Version:	1.0.0
+Version:	1.1.2
 Release:	1
 License:	BSD
 Group:		Libraries
-#Source0Download: https://github.com/Cyan4973/zstd/releases
-Source0:	https://github.com/Cyan4973/zstd/archive/v%{version}/%{name}-%{version}.tar.gz
-# Source0-md5:	ca9a01cd81265ac235acdf611a25122e
+#Source0Download: https://github.com/facebook/zstd/releases
+Source0:	https://github.com/facebook/zstd/archive/v%{version}/%{name}-%{version}.tar.gz
+# Source0-md5:	4c57a080d194bdaac83f2d3251fc7ffc
 Patch0:		%{name}-noquiet.patch
 Patch1:		%{name}-no32.patch
 Patch2:		%{name}-noclean.patch
-URL:		https://github.com/Cyan4973/zstd
+URL:		https://github.com/facebook/zstd
 BuildRequires:	gcc >= 5:3.2
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
@@ -77,10 +77,12 @@ rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(644,root,root,755)
-%doc NEWS README.md images
+%doc LICENSE NEWS PATENTS README.md
 %attr(755,root,root) %{_bindir}/unzstd
 %attr(755,root,root) %{_bindir}/zstd
 %attr(755,root,root) %{_bindir}/zstdcat
+%attr(755,root,root) %{_bindir}/zstdgrep
+%attr(755,root,root) %{_bindir}/zstdless
 %attr(755,root,root) %{_libdir}/libzstd.so.*.*.*
 %attr(755,root,root) %ghost %{_libdir}/libzstd.so.1
 %{_mandir}/man1/unzstd.1*
@@ -89,10 +91,12 @@ rm -rf $RPM_BUILD_ROOT
 
 %files devel
 %defattr(644,root,root,755)
+%doc doc/{zstd_compression_format.md,zstd_manual.html,images}
 %attr(755,root,root) %{_libdir}/libzstd.so
 %{_includedir}/zbuff.h
 %{_includedir}/zdict.h
 %{_includedir}/zstd.h
+%{_includedir}/zstd_errors.h
 %{_pkgconfigdir}/libzstd.pc
 
 %files static
