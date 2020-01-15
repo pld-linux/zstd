@@ -42,15 +42,15 @@
  	@echo Cleaning library completed
  
  #-----------------------------------------------------------------------------
-@@ -199,7 +199,7 @@
+@@ -203,7 +203,7 @@ INSTALL_DATA    ?= $(INSTALL) -m 644
  libzstd.pc:
  libzstd.pc: libzstd.pc.in
  	@echo creating pkgconfig
 -	@sed -e 's|@PREFIX@|$(PREFIX)|' \
 +	sed -e 's|@PREFIX@|$(PREFIX)|' \
-              -e 's|@LIBDIR@|$(LIBDIR)|' \
-              -e 's|@INCLUDEDIR@|$(INCLUDEDIR)|' \
               -e 's|@VERSION@|$(VERSION)|' \
+              $< >$@
+ 
 @@ -209,39 +209,39 @@
  	@echo zstd static and shared library installed
  
