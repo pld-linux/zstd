@@ -58,12 +58,16 @@ LDFLAGS="%{rpmldflags}" \
 
 %install
 rm -rf $RPM_BUILD_ROOT
+install -d $RPM_BUILD_ROOT/%{_lib}
 
 %{__make} install \
 	V=1 \
 	DESTDIR=$RPM_BUILD_ROOT \
 	PREFIX=%{_prefix} \
 	LIBDIR=%{_libdir}
+
+%{__mv} $RPM_BUILD_ROOT%{_libdir}/libzstd.so.* $RPM_BUILD_ROOT/%{_lib}
+ln -sf /%{_lib}/$(basename $RPM_BUILD_ROOT/%{_lib}/libzstd.so.*.*.*) $RPM_BUILD_ROOT%{_libdir}/libzstd.so
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -80,8 +84,8 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_bindir}/zstdgrep
 %attr(755,root,root) %{_bindir}/zstdless
 %attr(755,root,root) %{_bindir}/zstdmt
-%attr(755,root,root) %{_libdir}/libzstd.so.*.*.*
-%attr(755,root,root) %ghost %{_libdir}/libzstd.so.1
+%attr(755,root,root) /%{_lib}/libzstd.so.*.*.*
+%attr(755,root,root) %ghost /%{_lib}/libzstd.so.1
 %{_mandir}/man1/unzstd.1*
 %{_mandir}/man1/zstd.1*
 %{_mandir}/man1/zstdcat.1*
