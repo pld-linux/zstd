@@ -51,7 +51,9 @@ Statyczna biblioteka Zstd.
 
 %build
 CC="%{__cc}" \
+CXX="%{__cxx}" \
 CFLAGS="%{rpmcflags} %{rpmcppflags}" \
+CXXFLAGS="%{rpmcxxflags} %{rpmcppflags}" \
 LDFLAGS="%{rpmldflags}" \
 %{__make} all \
 	V=1
