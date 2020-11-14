@@ -55,7 +55,7 @@ CXX="%{__cxx}" \
 CFLAGS="%{rpmcflags} %{rpmcppflags}" \
 CXXFLAGS="%{rpmcxxflags} %{rpmcppflags}" \
 LDFLAGS="%{rpmldflags}" \
-%{__make} all \
+%{__make} allmost manual \
 	V=1
 
 %install
