@@ -12,6 +12,10 @@ URL:		https://github.com/facebook/zstd
 BuildRequires:	gcc >= 5:3.2
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
+%ifarch %{arm}
+%define		archcflags	-DMEM_FORCE_MEMORY_ACCESS=1
+%endif
+
 %description
 Zstd, short for Zstandard, is a fast lossless compression algorithm,
 targeting real-time compression scenarios at zlib-level compression
@@ -52,7 +56,7 @@ Statyczna biblioteka Zstd.
 %build
 CC="%{__cc}" \
 CXX="%{__cxx}" \
-CFLAGS="%{rpmcflags} %{rpmcppflags}" \
+CFLAGS="%{rpmcflags} %{rpmcppflags} %{?archcflags}" \
 CXXFLAGS="%{rpmcxxflags} %{rpmcppflags}" \
 LDFLAGS="%{rpmldflags}" \
 %{__make} allmost manual \
