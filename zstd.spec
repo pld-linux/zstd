@@ -4,6 +4,7 @@
 
 # workaround executable stack on non-x86_64
 # https://github.com/facebook/zstd/issues/2963
+# (actually asm is x86_64 only, other archs have empty asm file, without non-exec stack marker)
 %ifnarch %{x8664}
 %undefine	with_asm
 %endif
