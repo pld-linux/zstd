@@ -2,23 +2,16 @@
 # Conditional build:
 %bcond_without	asm		# disable assembler
 
-# workaround executable stack on non-x86_64
-# https://github.com/facebook/zstd/issues/2963
-# (actually asm is x86_64 only, other archs have empty asm file, without non-exec stack marker)
-%ifnarch %{x8664}
-%undefine	with_asm
-%endif
-
 Summary:	Zstandard - fast lossless compression algorithm
 Summary(pl.UTF-8):	Zstandard - szybki, bezstratny algorytm kompresji
 Name:		zstd
-Version:	1.5.1
-Release:	2
+Version:	1.5.2
+Release:	1
 License:	BSD
 Group:		Libraries
 #Source0Download: https://github.com/facebook/zstd/releases
 Source0:	https://github.com/facebook/zstd/archive/v%{version}/%{name}-%{version}.tar.gz
-# Source0-md5:	120d77140ad538e8bd3a7dae6a38c4c9
+# Source0-md5:	6dc24b78e32e7c99f80c9441e40ff8bc
 URL:		https://github.com/facebook/zstd
 BuildRequires:	gcc >= 5:3.2
 BuildRequires:	lz4-devel
