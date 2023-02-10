@@ -14,6 +14,7 @@ Source0:	https://github.com/facebook/zstd/archive/v%{version}/%{name}-%{version}
 # Source0-md5:	02b49acde4ebb35f7e47a2a41032ffa8
 URL:		https://github.com/facebook/zstd
 BuildRequires:	gcc >= 5:3.2
+BuildRequires:	libstdc++-devel
 BuildRequires:	lz4-devel
 BuildRequires:	xz-devel
 BuildRequires:	zlib-devel
