@@ -5,13 +5,13 @@
 Summary:	Zstandard - fast lossless compression algorithm
 Summary(pl.UTF-8):	Zstandard - szybki, bezstratny algorytm kompresji
 Name:		zstd
-Version:	1.5.2
-Release:	2
+Version:	1.5.4
+Release:	1
 License:	BSD
 Group:		Libraries
 #Source0Download: https://github.com/facebook/zstd/releases
 Source0:	https://github.com/facebook/zstd/archive/v%{version}/%{name}-%{version}.tar.gz
-# Source0-md5:	6dc24b78e32e7c99f80c9441e40ff8bc
+# Source0-md5:	02b49acde4ebb35f7e47a2a41032ffa8
 URL:		https://github.com/facebook/zstd
 BuildRequires:	gcc >= 5:3.2
 BuildRequires:	lz4-devel
