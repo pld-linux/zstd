@@ -6,7 +6,7 @@ Summary:	Zstandard - fast lossless compression algorithm
 Summary(pl.UTF-8):	Zstandard - szybki, bezstratny algorytm kompresji
 Name:		zstd
 Version:	1.5.7
-Release:	1
+Release:	2
 License:	BSD
 Group:		Libraries
 #Source0Download: https://github.com/facebook/zstd/releases
@@ -38,7 +38,7 @@ kompresji zbliżonym do biblioteki zlib.
 Summary:	Header files for Zstd library
 Summary(pl.UTF-8):	Pliki nagłówkowe biblioteki Zstd
 Group:		Development/Libraries
-Requires:	%{name} = %{version}-%{release}
+Requires:	%{name}%{?_isa} = %{version}-%{release}
 
 %description devel
 Header files for Zstd library.
@@ -50,7 +50,7 @@ Pliki nagłówkowe biblioteki Zstd.
 Summary:	Static Zstd library
 Summary(pl.UTF-8):	Statyczna biblioteka Zstd
 Group:		Development/Libraries
-Requires:	%{name}-devel = %{version}-%{release}
+Requires:	%{name}-devel%{?_isa} = %{version}-%{release}
 
 %description static
 Static Zstd library.
